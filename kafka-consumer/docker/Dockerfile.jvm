@@ -1,0 +1,35 @@
+#Build stage
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:21.0.2-al2023-headful AS BUILD
+
+ENV APP_HOME=/usr/app
+WORKDIR $APP_HOME
+
+# Source code root directory path relative to "directory" attribute mentioned in the
+# DockerImage onject in infra CDK project
+ENV SRC_ROOT="."
+COPY $SRC_ROOT/gradlew $SRC_ROOT/build.gradle.kts $SRC_ROOT/gradle.properties $SRC_ROOT/settings.gradle.kts  $APP_HOME/
+
+COPY $SRC_ROOT/gradle $APP_HOME/gradle
+COPY $SRC_ROOT/src $APP_HOME/src
+
+USER root
+# build application
+RUN /bin/bash -c './gradlew build'
+
+#Package
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:21.0.2-al2023-headful
+ENV LANGUAGE='en_US:en'
+
+# Copy files
+COPY --chown=185 --from=BUILD /usr/app/build/quarkus-app/lib/ /deployments/lib/
+COPY --chown=185 --from=BUILD /usr/app/build/quarkus-app/*.jar /deployments/
+COPY --chown=185 --from=BUILD /usr/app/build/quarkus-app/app/ /deployments/app/
+COPY --chown=185 --from=BUILD /usr/app/build/quarkus-app/quarkus/ /deployments/quarkus/
+
+HEALTHCHECK CMD curl -f http://localhost:8081/health || exit 1
+
+EXPOSE 8081
+USER 185
+
+# Uncomment following line to run the docker image locally
+#CMD ["java", "-Djava.util.logging.manager=org.jboss.logmanager.LogManager", "-jar", "/deployments/quarkus-run.jar"]
