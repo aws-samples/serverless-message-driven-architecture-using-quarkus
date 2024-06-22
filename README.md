@@ -50,6 +50,9 @@ git clone <<repository url>>
 ```
 - On Terminal window navigate to “infra” folder and run the following commands.
 ```
+cd infra
+```
+```
 npm install
 ```
 - Following step is required for the first time to bootstrap the CDK environment.
