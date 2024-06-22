@@ -1,4 +1,4 @@
-## serverless-kafka-with-quarkus
+## Message driven architecture using AWS MSK Serverless and ECS Fargate hosting Java Quarkus Microservices
 
 ## Description
 This repository demonstrates Serverless Message driven architecture using AWS MSK Serverless 
