@@ -2,7 +2,7 @@
 
 ## Description
 This repository demonstrates Serverless Message driven architecture using MSK Serverless(Amazon Managed Streaming for Apache Kafka) 
-and ECS(Elastic Container Service) Fargate to host Java microservices built using Java Quarkus framework. 
+and ECS(Elastic Container Service) Fargate to host microservices built using Java Quarkus framework. 
 This sample shows different configurations required to establish connectivity from Java application to MSK Serverless.
 AWS CDK written in TypeScript is used for infrastructure as code development. IAM authentication enables the 
 Java Quarkus applications to access MSK. 
